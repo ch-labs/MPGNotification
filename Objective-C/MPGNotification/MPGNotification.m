@@ -35,7 +35,7 @@
 
 static const CGFloat kMaximumNotificationWidth = 512;
 
-static const CGFloat kNotificationHeight = 64;
+static const CGFloat kNotificationHeight = 70;
 static const CGFloat kIconImageSize = 32.0;
 static const NSTimeInterval kLinearAnimationTime = 0.25;
 
@@ -180,8 +180,8 @@ static const CGFloat kColorAdjustmentLight = 0.35;
     CGFloat buttonOriginX = notificationWidth - kButtonOriginXOffset - contentPaddingX;
     CGFloat closeButtonOriginX = notificationWidth - kCloseButtonOriginXOffset - contentPaddingX;
     
-    CGFloat firstButtonOriginY = (self.secondButton) ? 6 : 17;
     CGFloat buttonHeight = (self.firstButton && self.secondButton) ? 25 : 30;
+    CGFloat firstButtonOriginY = (self.secondButton) ? 6 : (kNotificationHeight - buttonHeight) / 2.0f;
     CGFloat secondButtonOriginY = firstButtonOriginY + buttonHeight + kButtonPadding;
     
     self.firstButton.frame = CGRectMake(buttonOriginX, firstButtonOriginY, kButtonWidthDefault, buttonHeight);
