@@ -535,10 +535,10 @@ static const CGFloat kColorAdjustmentLight = 0.35;
         
         UIWindow *window = [self _topAppWindow];
         
-        self.windowLevel = [[[[UIApplication sharedApplication] delegate] window] windowLevel];
+        self.windowLevel = [[self keyWindow] windowLevel];
         
         // Update windowLevel to make sure status bar does not interfere with the notification
-        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelStatusBar+1];
+        [[self keyWindow] setWindowLevel:UIWindowLevelStatusBar+1];
         
         // add the notification to the screen
         [window.subviews.lastObject addSubview:self];
@@ -695,7 +695,14 @@ static const CGFloat kColorAdjustmentLight = 0.35;
 }
 
 - (UIWindow *)_topAppWindow {
-    return ([UIApplication sharedApplication].keyWindow) ?: [[UIApplication sharedApplication].windows lastObject];
+    return ([[UIApplication sharedApplication] keyWindow]) ?: [[[UIApplication sharedApplication] windows] lastObject];
+}
+
+-(UIWindow *)keyWindow {
+    if ([[[UIApplication sharedApplication] delegate] respondsToSelector:@selector(window)]) {
+        return [[[UIApplication sharedApplication] delegate] window];
+    }
+    return [self _topAppWindow];
 }
 
 - (void)_startDismissTimerIfSet {
@@ -733,7 +740,7 @@ static const CGFloat kColorAdjustmentLight = 0.35;
 - (void)_destroyNotification {
     
     if (self.hostViewController == nil) {
-        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:self.windowLevel];
+        [[self keyWindow] setWindowLevel:self.windowLevel];
     }
     
     [self _dismissBlockHandler];
